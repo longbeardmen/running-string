@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+		<script src="jquery-2.1.3.js"></script>
+	</head>
+	<body>
+		<p></p><br>
+		<button>start</button>
+	</body>
+	<script type="text/javascript">
+		var allow = false,
+				p = $('p'),
+				pStr = '',
+				pArr = new Array(),
+				strArr = new Array();
+		
+			var pSize = +prompt('Enter size of line','10'), //size of line's visiable part
+				speed = +prompt('Enter speed(interval) of line','500'), //speed 
+				str = prompt('Enter running string', 'Tehanov Roman'); //text of line
+
+			$('button').on('click', function(){
+				allow = true; //key for trigger
+				
+
+				for(var i = 0; i < pSize; i++){ //make no free space in line
+				 	pArr[i] = '*';
+				}
+				
+				for(var i in str){ //make array with line symbols
+					strArr[i] = str[i]; 
+				}
+
+				for(var i in strArr){ //make '*' enstead ' ' in line
+					if(strArr[i] == ' ')
+						strArr[i] = '*';
+				}
+
+				pArr = pArr.concat(strArr, pArr); //make "long array" for "long string"
+
+				pStr = pArr.join(''); //make "long string" from "long" array
+
+				/*
+				the main idea seems to creating "static window" and moving "long string" under it.
+				but actually we are moving "static window" and "long" string is static.
+				*/ 
+
+				var i = 0; 
+				if(i < pSize + str.length + 1){
+					var interval = setInterval(function () {
+						p.text(pStr.slice(i, pSize + i));
+						i++;
+						if(i > pSize + str.length ){
+							clearInterval(interval);
+						}
+					}, speed);
+				}else
+					i = 0; //reser index if full "long" string already moved
+
+			trig = setTimeout(function(){ //creating of infinity by trigger
+				if(allow)
+					$('button').trigger('click');
+			}, speed*(pSize + str.length));
+		});
+	</script>
+</html> 
